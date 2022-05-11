@@ -6,6 +6,8 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Condition.text;
 
+import com.codeborne.selenide.Selenide;
+import io.qameta.allure.Allure;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,32 +33,39 @@ public class DemoQaTest extends TestBase
         String state = "NCR";
         String city = "Delhi";
 
-        open("/automation-practice-form");
-        $("#firstName").setValue(firstName);
-        $("#lastName").setValue(lastName);
-        $("#userEmail").setValue(userEmail);
-        $("#genterWrapper").$(byText(gender)).click();
-        $("#userNumber").setValue(userNumber);
+        Allure.step("Открываем automation-practice-form", () ->{
+            open("/automation-practice-form");
+        });
 
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption("September");
-        $(".react-datepicker__year-select").selectOption("2000");
-        $("[aria-label$='September 13th, 2000']").click();
-        $("#subjectsInput").setValue(subjects).pressEnter();
+        Allure.step("Заполняем поля на форме", () ->{
+            $("#firstName").setValue(firstName);
+            $("#lastName").setValue(lastName);
+            $("#userEmail").setValue(userEmail);
+            $("#genterWrapper").$(byText(gender)).click();
+            $("#userNumber").setValue(userNumber);
 
-        $(byText(hobbies)).click();
-        $("#uploadPicture").uploadFromClasspath("file/1.png");
-        $("#currentAddress").setValue(currentAddress);
+            $("#dateOfBirthInput").click();
+            $(".react-datepicker__month-select").selectOption("September");
+            $(".react-datepicker__year-select").selectOption("2000");
+            $("[aria-label$='September 13th, 2000']").click();
+            $("#subjectsInput").setValue(subjects).pressEnter();
 
-        $("#state").click();
-        $(byText(state)).click();
-        $("#city").click();
-        $(byText(city)).click();
+            $(byText(hobbies)).click();
+            $("#uploadPicture").uploadFromClasspath("file/1.png");
+            $("#currentAddress").setValue(currentAddress);
 
-        $("#submit").click();
+            $("#state").click();
+            $(byText(state)).click();
+            $("#city").click();
+            $(byText(city)).click();
 
-        $(".table-responsive").shouldHave(text(firstName), text(lastName), text(userEmail), text(gender),
-                text(userNumber), text("September 13th, 2000"), text(subjects), text(hobbies), text(currentAddress),
-                text(state), text(city));
+            $("#submit").click();
+        });
+
+        Allure.step("Проверяем", () ->{
+            $(".table-responsive").shouldHave(text(firstName), text(lastName), text(userEmail), text(gender),
+                    text(userNumber), text("September 13th,2000"), text(subjects), text(hobbies), text(currentAddress),
+                    text(state), text(city));
+        });
     }
 }
