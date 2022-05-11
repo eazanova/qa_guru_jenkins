@@ -1,6 +1,8 @@
 package tests;
 
 import com.github.javafaker.Faker;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import org.junit.jupiter.api.Test;
 import pages.RegistartionFormPage;
 
@@ -14,8 +16,8 @@ public class RegistrationFormTest extends TestBase
     String firstName = faker.name().firstName(),
             lastName = faker.name().lastName(),
             userEmail = faker.internet().emailAddress(),
-            userNumber = faker.phoneNumber().phoneNumber(),
             currentAddress = faker.rickAndMorty().quote(),
+            userNumber = "1234567890",
             gender = "Female",
             subject = "Biology",
             hobby = "Music",
@@ -29,36 +31,44 @@ public class RegistrationFormTest extends TestBase
     RegistartionFormPage registartionFormPage = new RegistartionFormPage();
 
     @Test
+    @Description("Тестирование фрмы регистрации")
     void testRegistrationStudent()
     {
-        registartionFormPage.openPage()
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setUserEmail(userEmail)
-                .setGender(gender)
-                .setUserNumber(userNumber)
-                .setDate(day, month, year)
-                .setSubject(subject)
-                .setHobby(hobby)
-                .setImage(path)
-                .setAddress(currentAddress)
-                .setState(state)
-                .setCity(city)
-                .clickSubmit();
+        Allure.step("Открываем automation-practice-form", () ->{
+            registartionFormPage.openPage();
+        });
 
-        registartionFormPage.checkResult(firstName)
-                .checkResult(lastName)
-                .checkResult(userEmail)
-                .checkResult(gender)
-                .checkResult(userNumber)
-                .checkResult(day)
-                .checkResult(month)
-                .checkResult(year)
-                .checkResult(subject)
-                .checkResult(hobby)
-                .checkResult(path)
-                .checkResult(currentAddress)
-                .checkResult(state)
-                .checkResult(city);
+        Allure.step("Заполняем поля на форме", () ->{
+            registartionFormPage.setFirstName(firstName)
+                    .setLastName(lastName)
+                    .setUserEmail(userEmail)
+                    .setGender(gender)
+                    .setUserNumber(userNumber)
+                    .setDate(day, month, year)
+                    .setSubject(subject)
+                    .setHobby(hobby)
+                    .setImage(path)
+                    .setAddress(currentAddress)
+                    .setState(state)
+                    .setCity(city)
+                    .clickSubmit();
+        });
+
+        Allure.step("Проверяем", () ->{
+            registartionFormPage.checkResult(firstName)
+                    .checkResult(lastName)
+                    .checkResult(userEmail)
+                    .checkResult(gender)
+                    .checkResult(userNumber)
+                    .checkResult(day)
+                    .checkResult(month)
+                    .checkResult(year)
+                    .checkResult(subject)
+                    .checkResult(hobby)
+                    .checkResult(path)
+                    .checkResult(currentAddress)
+                    .checkResult(state)
+                    .checkResult(city);
+        });
     }
 }
